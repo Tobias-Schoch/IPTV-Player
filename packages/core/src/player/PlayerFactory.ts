@@ -76,8 +76,8 @@ export class PlayerFactory {
    * Create player for TizenOS
    */
   private static async createTizenPlayer(
-    streamUrl: string,
-    config: PlayerFactoryConfig
+    _streamUrl: string,
+    _config: PlayerFactoryConfig
   ): Promise<IVideoPlayer> {
     // Dynamic import to avoid loading Tizen-specific code on web
     try {

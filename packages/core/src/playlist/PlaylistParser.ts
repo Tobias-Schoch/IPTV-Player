@@ -50,8 +50,8 @@ export class PlaylistParser {
           id: data.id,
           name: data.name,
           streamUrl: data.streamUrl,
-          logoUrl: data.logoUrl,
-          groupTitle: data.groupTitle,
+          logoUrl: data.logoUrl ?? undefined,
+          groupTitle: data.groupTitle ?? undefined,
           metadata: data.metadata,
         });
       });
@@ -99,15 +99,16 @@ export class PlaylistParser {
 
       // Get categories for grouping
       const categoriesResponse = await fetch(`${apiUrl}&action=get_live_categories`);
-      const categories = categoriesResponse.ok ? await categoriesResponse.json() : [];
-      const categoryMap = new Map(
+      const categoriesData = categoriesResponse.ok ? await categoriesResponse.json() : [];
+      const categories: any[] = Array.isArray(categoriesData) ? categoriesData : [];
+      const categoryMap = new Map<string, string>(
         categories.map((cat: any) => [cat.category_id, cat.category_name])
       );
 
       // Convert to Channel objects
       const channels: Channel[] = streams.map((stream: any) => {
         const streamUrl = `${baseUrl}/live/${source.username}/${source.password}/${stream.stream_id}.${stream.container_extension || 'm3u8'}`;
-        const groupTitle = categoryMap.get(stream.category_id) || 'Uncategorized';
+        const groupTitle: string | undefined = categoryMap.get(stream.category_id) || 'Uncategorized';
 
         const metadata: ChannelMetadata = {
           tvgId: String(stream.stream_id),
@@ -120,7 +121,7 @@ export class PlaylistParser {
           id: String(stream.stream_id),
           name: stream.name || `Channel ${stream.stream_id}`,
           streamUrl,
-          logoUrl: stream.stream_icon,
+          logoUrl: stream.stream_icon || undefined,
           groupTitle,
           metadata,
         });
@@ -214,8 +215,8 @@ export class PlaylistParser {
           id: data.id,
           name: data.name,
           streamUrl: data.streamUrl,
-          logoUrl: data.logoUrl,
-          groupTitle: data.groupTitle,
+          logoUrl: data.logoUrl ?? undefined,
+          groupTitle: data.groupTitle ?? undefined,
           metadata: data.metadata,
         });
       });

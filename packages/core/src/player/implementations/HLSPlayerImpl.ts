@@ -32,7 +32,6 @@ export class HLSPlayerImpl implements IVideoPlayer {
   private state: PlayerState = 'idle';
   private eventListeners: Map<PlayerEventType, Set<PlayerEventListener>> = new Map();
   private initialized = false;
-  private currentStreamUrl: string | null = null;
 
   /**
    * Initialize HLS.js Player
@@ -136,7 +135,6 @@ export class HLSPlayerImpl implements IVideoPlayer {
 
     try {
       this.setState('loading');
-      this.currentStreamUrl = streamUrl;
 
       if (this.hls) {
         // HLS.js
@@ -197,7 +195,6 @@ export class HLSPlayerImpl implements IVideoPlayer {
       this.videoElement.src = '';
     }
 
-    this.currentStreamUrl = null;
     this.setState('idle');
   }
 

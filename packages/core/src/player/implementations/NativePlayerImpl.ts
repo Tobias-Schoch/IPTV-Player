@@ -14,6 +14,18 @@ import type {
 import { createPlayerError, PlayerErrorCode, classifyMediaError } from '../PlayerError';
 import { VideoPlayerError } from '../IVideoPlayer';
 
+// Extended HTMLVideoElement with audioTracks (experimental API)
+interface ExtendedHTMLVideoElement extends HTMLVideoElement {
+  audioTracks?: {
+    length: number;
+    [index: number]: {
+      enabled: boolean;
+      language: string;
+      label: string;
+    };
+  };
+}
+
 /**
  * Native HTML5 Video Player implementation
  * For progressive video formats (MP4, WebM, OGG)
@@ -175,13 +187,14 @@ export class NativePlayerImpl implements IVideoPlayer {
    * Get audio tracks
    */
   getAudioTracks(): AudioTrack[] {
-    if (!this.videoElement || !this.videoElement.audioTracks) {
+    const videoEl = this.videoElement as ExtendedHTMLVideoElement;
+    if (!videoEl || !videoEl.audioTracks) {
       return [];
     }
 
     const tracks: AudioTrack[] = [];
-    for (let i = 0; i < this.videoElement.audioTracks.length; i++) {
-      const track = this.videoElement.audioTracks[i];
+    for (let i = 0; i < videoEl.audioTracks.length; i++) {
+      const track = videoEl.audioTracks[i];
       if (track) {
         tracks.push({
           id: String(i),
@@ -197,12 +210,13 @@ export class NativePlayerImpl implements IVideoPlayer {
 
   getCurrentAudioTrack(): AudioTrack | null {
     const tracks = this.getAudioTracks();
-    if (!this.videoElement?.audioTracks) {
+    const videoEl = this.videoElement as ExtendedHTMLVideoElement;
+    if (!videoEl?.audioTracks) {
       return tracks[0] ?? null;
     }
 
-    for (let i = 0; i < this.videoElement.audioTracks.length; i++) {
-      if (this.videoElement.audioTracks[i]?.enabled) {
+    for (let i = 0; i < videoEl.audioTracks.length; i++) {
+      if (videoEl.audioTracks[i]?.enabled) {
         return tracks[i] ?? null;
       }
     }
@@ -211,13 +225,14 @@ export class NativePlayerImpl implements IVideoPlayer {
   }
 
   async setAudioTrack(trackId: string): Promise<void> {
-    if (!this.videoElement?.audioTracks) {
+    const videoEl = this.videoElement as ExtendedHTMLVideoElement;
+    if (!videoEl?.audioTracks) {
       return;
     }
 
     const index = parseInt(trackId, 10);
-    for (let i = 0; i < this.videoElement.audioTracks.length; i++) {
-      const track = this.videoElement.audioTracks[i];
+    for (let i = 0; i < videoEl.audioTracks.length; i++) {
+      const track = videoEl.audioTracks[i];
       if (track) {
         track.enabled = i === index;
       }

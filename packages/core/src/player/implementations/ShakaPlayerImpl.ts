@@ -46,7 +46,8 @@ export class ShakaPlayerImpl implements IVideoPlayer {
 
     try {
       // Dynamically import Shaka Player (browser only)
-      const shaka = await import('shaka-player/dist/shaka-player.ui');
+      const shakaModule = await import('shaka-player/dist/shaka-player.ui');
+      const shaka = (shakaModule as any).default || shakaModule;
 
       // Check browser support
       if (!shaka.Player.isBrowserSupported()) {

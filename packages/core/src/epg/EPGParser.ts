@@ -14,24 +14,6 @@ export interface EPGSource {
 }
 
 /**
- * XMLTV Program
- */
-interface XMLTVProgram {
-  channel: string;
-  start: string;
-  stop: string;
-  title: string;
-  desc?: string;
-  category?: string;
-  icon?: string;
-  rating?: string;
-  'episode-num'?: {
-    system: string;
-    value: string;
-  };
-}
-
-/**
  * JSON EPG Program
  */
 interface JSONEPGProgram {
@@ -111,8 +93,8 @@ export class EPGParser {
           const rating = ratingEl?.textContent || null;
 
           // Parse episode number (format: S01E05 or 0.4.0/1)
-          let season: number | null = null;
-          let episode: number | null = null;
+          let season: number | undefined = undefined;
+          let episode: number | undefined = undefined;
 
           if (episodeEl) {
             const system = episodeEl.getAttribute('system');
@@ -122,14 +104,14 @@ export class EPGParser {
               if (system === 'onscreen') {
                 // Format: S01E05
                 const match = value.match(/S(\d+)E(\d+)/i);
-                if (match) {
+                if (match?.[1] && match?.[2]) {
                   season = parseInt(match[1], 10);
                   episode = parseInt(match[2], 10);
                 }
               } else {
                 // Format: 0.4.0/1 (season.episode.part/total)
                 const parts = value.split('.');
-                if (parts.length >= 2) {
+                if (parts.length >= 2 && parts[0] && parts[1]) {
                   season = parseInt(parts[0], 10) + 1; // 0-indexed
                   episode = parseInt(parts[1], 10) + 1;
                 }
@@ -143,10 +125,10 @@ export class EPGParser {
             title,
             startTime: this.parseXMLTVTime(startStr),
             endTime: this.parseXMLTVTime(stopStr),
-            description,
-            category,
-            posterUrl,
-            rating,
+            description: description ?? undefined,
+            category: category ?? undefined,
+            posterUrl: posterUrl ?? undefined,
+            rating: rating ?? undefined,
             season,
             episode,
           });

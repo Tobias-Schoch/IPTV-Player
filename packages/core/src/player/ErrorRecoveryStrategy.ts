@@ -89,7 +89,7 @@ export class ErrorRecoveryStrategy {
    * Retry with exponential backoff
    */
   private async retryWithBackoff(
-    error: PlayerError,
+    _error: PlayerError,
     context: string,
     retryFn: () => Promise<void>
   ): Promise<RecoveryResult> {

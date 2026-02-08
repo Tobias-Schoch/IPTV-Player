@@ -5,7 +5,7 @@
  * Supports attributes: tvg-id, tvg-name, tvg-logo, tvg-language, group-title
  */
 
-import type { Channel, ChannelMetadata } from '../domain/index.js';
+import type { ChannelMetadata } from '@iptv/types';
 
 export interface M3UChannelData {
   id: string;
@@ -66,18 +66,17 @@ export class M3UParser {
 
     // Extract channel name (everything after the last comma)
     const nameMatch = extinf.match(/,(.*)$/);
-    const name = nameMatch ? nameMatch[1].trim() : 'Unknown Channel';
+    const name = nameMatch?.[1]?.trim() || 'Unknown Channel';
 
     // Generate ID from tvg-id or name
     const id = attributes['tvg-id'] || this.generateId(name);
 
     // Build metadata
     const metadata: ChannelMetadata = {
-      tvgId: attributes['tvg-id'] || null,
-      tvgName: attributes['tvg-name'] || null,
-      language: attributes['tvg-language'] || null,
-      country: attributes['tvg-country'] || null,
-      epgChannelId: attributes['tvg-id'] || null,
+      tvgId: attributes['tvg-id'] || undefined,
+      tvgName: attributes['tvg-name'] || undefined,
+      language: attributes['tvg-language'] || undefined,
+      country: attributes['tvg-country'] || undefined,
     };
 
     return {
@@ -102,9 +101,11 @@ export class M3UParser {
     let match;
 
     while ((match = attrRegex.exec(extinf)) !== null) {
-      const key = match[1].toLowerCase();
+      const key = match[1]?.toLowerCase();
       const value = match[2];
-      attributes[key] = value;
+      if (key && value !== undefined) {
+        attributes[key] = value;
+      }
     }
 
     return attributes;

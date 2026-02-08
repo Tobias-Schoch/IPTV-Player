@@ -11,7 +11,7 @@ import type {
   PlayerEventType,
   PlayerEventListener,
 } from '../IVideoPlayer';
-import { createPlayerError, PlayerErrorCode, isDTSAudioError } from '../PlayerError';
+import { createPlayerError, PlayerErrorCode } from '../PlayerError';
 import { VideoPlayerError } from '../IVideoPlayer';
 
 /**
@@ -29,11 +29,9 @@ export class AVPlayPlayerImpl implements IVideoPlayer {
   public readonly name = 'AVPlay';
 
   private avplay: any = null;
-  private container: HTMLElement | null = null;
   private state: PlayerState = 'idle';
   private eventListeners: Map<PlayerEventType, Set<PlayerEventListener>> = new Map();
   private initialized = false;
-  private currentStreamUrl: string | null = null;
   private currentTime: number = 0;
   private duration: number = 0;
   private volume: number = 1.0;
@@ -65,7 +63,6 @@ export class AVPlayPlayerImpl implements IVideoPlayer {
       }
 
       this.avplay = (window as any).webapis.avplay;
-      this.container = options.container;
 
       // Set initial volume and mute state
       this.volume = options.volume ?? 1.0;
@@ -93,7 +90,6 @@ export class AVPlayPlayerImpl implements IVideoPlayer {
     return new Promise((resolve, reject) => {
       try {
         this.setState('loading');
-        this.currentStreamUrl = streamUrl;
 
         // Close previous stream if exists
         const currentState = this.getAVPlayState();
@@ -215,7 +211,6 @@ export class AVPlayPlayerImpl implements IVideoPlayer {
       this.stopTimeTracking();
       this.avplay.stop();
       this.avplay.close();
-      this.currentStreamUrl = null;
       this.currentTime = 0;
       this.duration = 0;
       this.setState('idle');
@@ -542,7 +537,7 @@ export class AVPlayPlayerImpl implements IVideoPlayer {
         this.currentTime = currentTime / 1000; // Convert ms to seconds
       },
 
-      onevent: (eventType: string, eventData: any) => {
+      onevent: (eventType: string, _eventData: any) => {
         if (eventType === 'PLAYER_MSG_STREAM_COMPLETED') {
           this.setState('ended');
           this.stopTimeTracking();

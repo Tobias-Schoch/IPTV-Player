@@ -137,8 +137,9 @@ export function classifyMediaError(mediaError: MediaError | null): PlayerError {
     );
   }
 
+  // MediaError codes: 1=ABORTED, 2=NETWORK, 3=DECODE, 4=SRC_NOT_SUPPORTED
   switch (mediaError.code) {
-    case MediaError.MEDIA_ERR_ABORTED:
+    case 1: // MEDIA_ERR_ABORTED
       return createPlayerError(
         'media',
         PlayerErrorCode.MEDIA_ELEMENT_ERROR,
@@ -146,7 +147,7 @@ export function classifyMediaError(mediaError: MediaError | null): PlayerError {
         false
       );
 
-    case MediaError.MEDIA_ERR_NETWORK:
+    case 2: // MEDIA_ERR_NETWORK
       return createPlayerError(
         'network',
         PlayerErrorCode.NETWORK_ERROR,
@@ -154,7 +155,7 @@ export function classifyMediaError(mediaError: MediaError | null): PlayerError {
         false
       );
 
-    case MediaError.MEDIA_ERR_DECODE:
+    case 3: // MEDIA_ERR_DECODE
       return createPlayerError(
         'media',
         PlayerErrorCode.MEDIA_DECODE_ERROR,
@@ -162,7 +163,7 @@ export function classifyMediaError(mediaError: MediaError | null): PlayerError {
         true
       );
 
-    case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+    case 4: // MEDIA_ERR_SRC_NOT_SUPPORTED
       return createPlayerError(
         'unsupported_format',
         PlayerErrorCode.MEDIA_SRC_NOT_SUPPORTED,
@@ -184,12 +185,16 @@ export function classifyMediaError(mediaError: MediaError | null): PlayerError {
  * Check if error is DTS audio error (Tizen specific)
  */
 export function isDTSAudioError(error: PlayerError): boolean {
-  return (
-    error.type === 'unsupported_audio' ||
-    (error.type === 'media' &&
-      error.details &&
-      typeof error.details === 'object' &&
-      'codec' in error.details &&
-      String((error.details as { codec: string }).codec).toLowerCase().includes('dts'))
-  );
+  if (error.type === 'unsupported_audio') {
+    return true;
+  }
+
+  if (error.type === 'media' && error.details && typeof error.details === 'object') {
+    if ('codec' in error.details) {
+      const codec = String((error.details as { codec: string }).codec).toLowerCase();
+      return codec.includes('dts');
+    }
+  }
+
+  return false;
 }
