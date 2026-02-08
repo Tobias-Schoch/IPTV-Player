@@ -1,0 +1,156 @@
+# IPTV Player
+
+A professional-grade IPTV player for Web and TizenOS (Samsung Smart TV) platforms.
+
+## Features
+
+- 🎬 **Multi-Platform**: Runs on Web browsers and Samsung Smart TVs (2022+)
+- 📺 **HLS/DASH Streaming**: Support for adaptive bitrate streaming
+- 📋 **M3U/M3U8 Playlists**: Import standard IPTV playlists
+- 📺 **EPG Support**: Electronic Program Guide integration
+- 🎨 **World-Class UI**: Beautiful, modern interface with smooth animations
+- ⚡ **High Performance**: <2s launch time, <1s channel switching
+- 🔒 **Type-Safe**: 100% TypeScript codebase
+- 🏗️ **Clean Architecture**: SOLID principles, testable, maintainable
+
+## Tech Stack
+
+### Core
+- **TypeScript** - 100% type-safe codebase
+- **pnpm** + **Turborepo** - Monorepo management
+- **Zustand** - State management
+- **iptv-m3u-playlist-parser** - M3U playlist parsing
+
+### Web Platform
+- **React 19** + **Next.js 16** - Modern React framework
+- **Tailwind CSS** - Utility-first styling
+- **Shaka Player** + **HLS.js** - Video playback
+- **Framer Motion** - Smooth animations
+
+### TizenOS Platform
+- **Vanilla JavaScript** + **Web Components** - Memory-optimized
+- **AVPlay API** - Native Tizen video playback
+- **Custom Focus Manager** - Remote control navigation
+
+## Project Structure
+
+```
+iptvPlayer/
+├── apps/
+│   ├── web/              # Next.js web application
+│   └── tizen/            # TizenOS application
+├── packages/
+│   ├── core/             # Shared business logic
+│   ├── types/            # TypeScript type definitions
+│   ├── ui-components/    # Shared UI components
+│   └── utils/            # Shared utilities
+└── configs/              # Shared configurations
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+ (see `.nvmrc`)
+- pnpm 8+
+
+### Installation
+
+```bash
+# Install pnpm (if not already installed)
+npm install -g pnpm
+
+# Install dependencies
+pnpm install
+
+# Build all packages
+pnpm build
+
+# Start development
+pnpm dev
+```
+
+### Development
+
+```bash
+# Run web app in development mode
+pnpm --filter @iptv/web dev
+
+# Run tests
+pnpm test
+
+# Type checking
+pnpm type-check
+
+# Linting
+pnpm lint
+
+# Format code
+pnpm format
+```
+
+## Architecture
+
+### Clean Architecture Layers
+
+```
+┌────────────────────────────────────────────┐
+│   UI Layer (React / Web Components)        │
+├────────────────────────────────────────────┤
+│   State Management (Zustand)               │
+├────────────────────────────────────────────┤
+│   Use Cases / Business Logic               │
+├────────────────────────────────────────────┤
+│   Domain Models (Channel, Playlist, EPG)   │
+├────────────────────────────────────────────┤
+│   Player Abstraction (IVideoPlayer)        │
+│   ┌──────────┬──────────┬──────────┐      │
+│   │  Shaka   │  HLS.js  │  AVPlay  │      │
+│   └──────────┴──────────┴──────────┘      │
+└────────────────────────────────────────────┘
+```
+
+### Key Design Patterns
+
+- **Strategy Pattern**: Player abstraction (`IVideoPlayer` interface)
+- **Factory Pattern**: Dynamic player selection (`PlayerFactory`)
+- **Immutable Domain Models**: All domain entities are immutable
+- **Error Recovery**: Automatic retry with exponential backoff
+
+## Performance Targets
+
+### Web
+- Initial load: <2 seconds
+- Time to first frame: <3 seconds
+- Channel switch: <1 second
+- Lighthouse score: >90
+
+### TizenOS
+- Launch time: <2 seconds
+- Memory usage: <150MB
+- Channel switch: <1 second
+- Smooth 60fps navigation
+
+## Current Status
+
+**Phase 1: Foundation** ✅ (In Progress)
+- [x] Monorepo setup with pnpm + Turborepo
+- [x] TypeScript configuration
+- [x] Domain models (Channel, Playlist, EPGProgram)
+- [x] Player interface (IVideoPlayer)
+- [x] Player factory
+- [x] Error handling and recovery
+
+**Phase 2: Core Player Abstraction** (Next)
+- [ ] Shaka Player implementation
+- [ ] HLS.js implementation
+- [ ] AVPlay implementation
+- [ ] Unit tests
+
+## License
+
+MIT
+
+## Author
+
+Tobias Schoch

@@ -1,0 +1,55 @@
+{
+  "name": "@iptv/core",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Core business logic and domain models for IPTV Player",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./domain": {
+      "types": "./dist/domain/index.d.ts",
+      "default": "./dist/domain/index.js"
+    },
+    "./player": {
+      "types": "./dist/player/index.d.ts",
+      "default": "./dist/player/index.js"
+    },
+    "./playlist": {
+      "types": "./dist/playlist/index.d.ts",
+      "default": "./dist/playlist/index.js"
+    },
+    "./epg": {
+      "types": "./dist/epg/index.d.ts",
+      "default": "./dist/epg/index.js"
+    },
+    "./state": {
+      "types": "./dist/state/index.d.ts",
+      "default": "./dist/state/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@iptv/types": "workspace:*",
+    "zustand": "^4.5.0",
+    "iptv-m3u-playlist-parser": "^1.0.0"
+  },
+  "devDependencies": {
+    "@iptv/typescript-config": "workspace:*",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  }
+}
