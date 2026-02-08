@@ -46,6 +46,10 @@
     "zustand": "^4.5.0",
     "iptv-m3u-playlist-parser": "^1.0.0"
   },
+  "peerDependencies": {
+    "shaka-player": "^4.10.0",
+    "hls.js": "^1.5.0"
+  },
   "devDependencies": {
     "@iptv/typescript-config": "workspace:*",
     "@types/node": "^20.11.0",

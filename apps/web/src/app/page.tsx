@@ -21,12 +21,12 @@ export default function Home(): JSX.Element {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-in" style={{ animationDelay: '0.4s' }}>
-            <button className="btn-primary text-lg px-8 py-4">
-              Get Started
-            </button>
-            <button className="btn-secondary text-lg px-8 py-4">
+            <a href="/channels" className="btn-primary text-lg px-8 py-4 text-center">
+              Browse Channels
+            </a>
+            <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener noreferrer" className="btn-secondary text-lg px-8 py-4 text-center">
               View Documentation
-            </button>
+            </a>
           </div>
         </div>
       </section>
