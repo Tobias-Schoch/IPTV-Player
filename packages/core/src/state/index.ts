@@ -5,3 +5,4 @@
 
 export * from './playerStore';
 export * from './playlistStore';
+export * from './epgStore';

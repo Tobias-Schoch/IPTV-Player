@@ -3,11 +3,29 @@ import { persist } from 'zustand/middleware';
 import type { Channel, Playlist } from '../domain';
 
 /**
+ * Saved playlist metadata
+ */
+export interface SavedPlaylist {
+  readonly id: string;
+  readonly name: string;
+  readonly url: string;
+  readonly type: 'm3u' | 'm3u8' | 'xtream';
+  readonly username?: string;
+  readonly password?: string;
+  readonly channelCount: number;
+  readonly lastUpdated: Date;
+}
+
+/**
  * Playlist store state
  */
 interface PlaylistStoreState {
-  // Playlist
+  // Active playlist
   playlist: Playlist | null;
+
+  // Saved playlists
+  savedPlaylists: SavedPlaylist[];
+  activePlaylistId: string | null;
 
   // Favorites
   favoriteChannelIds: Set<string>;
@@ -30,6 +48,12 @@ interface PlaylistStoreState {
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   reset: () => void;
+
+  // Playlist management
+  savePlaylist: (saved: SavedPlaylist) => void;
+  removeSavedPlaylist: (id: string) => void;
+  setActivePlaylistId: (id: string | null) => void;
+  getSavedPlaylist: (id: string) => SavedPlaylist | undefined;
 }
 
 /**
@@ -37,6 +61,8 @@ interface PlaylistStoreState {
  */
 const initialState = {
   playlist: null,
+  savedPlaylists: [],
+  activePlaylistId: null,
   favoriteChannelIds: new Set<string>(),
   searchQuery: '',
   selectedGroup: null,
@@ -95,10 +121,42 @@ export const usePlaylistStore = create<PlaylistStoreState>()(
       setError: (error) => set({ error }),
 
       reset: () => set(initialState),
+
+      // Playlist management
+      savePlaylist: (saved) => {
+        const { savedPlaylists } = get();
+        const existing = savedPlaylists.findIndex((p) => p.id === saved.id);
+
+        if (existing >= 0) {
+          // Update existing
+          const updated = [...savedPlaylists];
+          updated[existing] = saved;
+          set({ savedPlaylists: updated });
+        } else {
+          // Add new
+          set({ savedPlaylists: [...savedPlaylists, saved] });
+        }
+      },
+
+      removeSavedPlaylist: (id) => {
+        const { savedPlaylists, activePlaylistId } = get();
+        set({
+          savedPlaylists: savedPlaylists.filter((p) => p.id !== id),
+          activePlaylistId: activePlaylistId === id ? null : activePlaylistId,
+        });
+      },
+
+      setActivePlaylistId: (activePlaylistId) => set({ activePlaylistId }),
+
+      getSavedPlaylist: (id) => {
+        return get().savedPlaylists.find((p) => p.id === id);
+      },
     }),
     {
       name: 'iptv-playlist-storage',
       partialize: (state) => ({
+        savedPlaylists: state.savedPlaylists,
+        activePlaylistId: state.activePlaylistId,
         favoriteChannelIds: Array.from(state.favoriteChannelIds),
       }),
     }

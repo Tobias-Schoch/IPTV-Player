@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { usePlaylistStore, selectChannelById } from '@iptv/core/state';
 import { VideoPlayer } from '@/components/player/VideoPlayer';
+import { ProgramInfo } from '@/components/epg/ProgramInfo';
 import type { Channel } from '@iptv/core/domain';
 
 export default function PlayerPage(): JSX.Element {
@@ -63,8 +64,13 @@ export default function PlayerPage(): JSX.Element {
         />
       </div>
 
-      {/* Channel Info Overlay */}
-      <div className="absolute bottom-24 left-6 z-40 glass-strong p-6 rounded-xl max-w-md">
+      {/* Channel Info & EPG Sidebar */}
+      <div className="absolute bottom-24 right-6 z-40 max-w-md space-y-4">
+        {/* EPG Program Info */}
+        <ProgramInfo channelId={channel.id} />
+
+        {/* Channel Info */}
+        <div className="glass-strong p-6 rounded-xl">
         <div className="flex items-start gap-4">
           {channel.displayLogo && (
             <img
@@ -103,6 +109,7 @@ export default function PlayerPage(): JSX.Element {
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
     </div>

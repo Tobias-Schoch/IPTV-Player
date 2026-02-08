@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { PlaylistParser } from '@iptv/core/playlist';
 import type { PlaylistSource, PlaylistFormat } from '@iptv/core/playlist';
 import { usePlaylistStore } from '@iptv/core/state';
+import type { SavedPlaylist } from '@iptv/core/state';
 
 interface AddPlaylistModalProps {
   isOpen: boolean;
@@ -21,6 +22,8 @@ export function AddPlaylistModal({ isOpen, onClose }: AddPlaylistModalProps): JS
   const setPlaylist = usePlaylistStore((state) => state.setPlaylist);
   const setPlaylistLoading = usePlaylistStore((state) => state.setLoading);
   const setPlaylistError = usePlaylistStore((state) => state.setError);
+  const savePlaylist = usePlaylistStore((state) => state.savePlaylist);
+  const setActivePlaylistId = usePlaylistStore((state) => state.setActivePlaylistId);
 
   if (!isOpen) {
     return <></>;
@@ -59,6 +62,20 @@ export function AddPlaylistModal({ isOpen, onClose }: AddPlaylistModalProps): JS
 
       const playlist = await PlaylistParser.parseFromUrl(source);
 
+      // Save playlist metadata for future loads
+      const savedPlaylist: SavedPlaylist = {
+        id: playlist.id,
+        name: playlist.metadata.title || 'IPTV Playlist',
+        url,
+        type: source.type,
+        username: source.username,
+        password: source.password,
+        channelCount: playlist.size,
+        lastUpdated: new Date(),
+      };
+
+      savePlaylist(savedPlaylist);
+      setActivePlaylistId(playlist.id);
       setPlaylist(playlist);
       setPlaylistLoading(false);
 

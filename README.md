@@ -201,14 +201,22 @@ npm run docker:logs
 - [x] **Playlist validation** - URL validation and error handling
 - [x] **Test playlist** - Included with working streams (NASA, Red Bull TV, etc.)
 
-**Phase 5: Advanced Features** (Next)
-- [ ] EPG timeline view
-- [ ] Virtual scrolling for 1000+ channels
+**Phase 5: Advanced Features** ✅ **COMPLETE**
+- [x] **Playlist Persistence** - Auto-save to localStorage
+- [x] **Multiple Playlists** - Playlist Manager UI
+- [x] **Virtual Scrolling** - Custom implementation for 10000+ channels
+- [x] **EPG Integration** - XMLTV + JSON parser
+- [x] **Program Info** - Current/next program display
+- [x] **EPG Progress** - Real-time progress bars
+
+**Phase 6: Polish & Production** (Next)
 - [ ] Keyboard shortcuts
 - [ ] Picture-in-Picture
-- [ ] Playlist management (multiple playlists)
+- [ ] EPG timeline view
+- [ ] VOD Support (Xtream movies/series)
 - [ ] Unit tests
 - [ ] E2E tests
+- [ ] Performance optimizations
 
 ## License
 
