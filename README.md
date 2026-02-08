@@ -52,41 +52,70 @@ iptvPlayer/
 ### Prerequisites
 
 - Node.js 20+ (see `.nvmrc`)
-- pnpm 8+
+- npm 10+
+- Docker (optional, recommended)
 
-### Installation
+### Quick Start with Docker (Recommended)
 
 ```bash
-# Install pnpm (if not already installed)
-npm install -g pnpm
+# Development mode (with hot reload)
+docker-compose --profile dev up web-dev
 
-# Install dependencies
-pnpm install
+# Production mode
+docker-compose up -d web
 
-# Build all packages
-pnpm build
-
-# Start development
-pnpm dev
+# Access at http://localhost:3000
 ```
 
-### Development
+### Local Development (Without Docker)
 
 ```bash
-# Run web app in development mode
-pnpm --filter @iptv/web dev
+# Install dependencies
+npm install
+
+# Build all packages
+npm run build
+
+# Start development
+npm run dev
+
+# Or start web app only
+npm run dev:web
+```
+
+### Development Commands
+
+```bash
+# Run web app
+npm run dev:web
 
 # Run tests
-pnpm test
+npm test
 
 # Type checking
-pnpm type-check
+npm run type-check
 
 # Linting
-pnpm lint
+npm run lint
 
 # Format code
-pnpm format
+npm run format
+```
+
+### Docker Commands
+
+```bash
+# Build Docker image
+npm run docker:build
+
+# Start containers
+npm run docker:up
+
+# Stop containers
+npm run docker:down
+
+# View logs
+npm run docker:logs
 ```
 
 ## Architecture
