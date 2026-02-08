@@ -1,0 +1,25 @@
+#EXTM3U
+
+#EXTINF:-1 tvg-id="bbb" tvg-name="Big Buck Bunny" tvg-logo="https://peach.blender.org/wp-content/uploads/bbb-splash.png" group-title="Demo Movies",Big Buck Bunny (Short Film)
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+
+#EXTINF:-1 tvg-id="tos" tvg-name="Tears of Steel" tvg-logo="https://mango.blender.org/wp-content/uploads/2013/05/27_comp_000272.jpg" group-title="Demo Movies",Tears of Steel (Short Film)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+#EXTINF:-1 tvg-id="sintel" tvg-name="Sintel" tvg-logo="https://durian.blender.org/wp-content/uploads/2010/06/sintel_trailer_1080p.png" group-title="Demo Movies",Sintel (Short Film)
+https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8
+
+#EXTINF:-1 tvg-id="apple_basic" tvg-name="Apple Test Stream (Basic)" tvg-logo="https://www.apple.com/favicon.ico" group-title="Test Streams",Apple HLS Test (Basic)
+https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8
+
+#EXTINF:-1 tvg-id="apple_advanced" tvg-name="Apple Test Stream (Advanced)" tvg-logo="https://www.apple.com/favicon.ico" group-title="Test Streams",Apple HLS Test (Advanced)
+https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8
+
+#EXTINF:-1 tvg-id="red_bull_tv" tvg-name="Red Bull TV" tvg-logo="https://images.redbull.com/image/upload/q_auto,f_auto/redbullcom/2019/05/08/c8e0f1fa-8c90-4d4e-8dce-2c6d8c674b3f/red-bull-tv-app-icon" group-title="Sports",Red Bull TV
+https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8
+
+#EXTINF:-1 tvg-id="nasa_tv" tvg-name="NASA TV Public" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/200px-NASA_logo.svg.png" group-title="Education",NASA TV (Live)
+https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master.m3u8
+
+#EXTINF:-1 tvg-id="nasa_iss" tvg-name="NASA ISS Feed" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/200px-NASA_logo.svg.png" group-title="Education",ISS HD Earth Viewing
+https://nasa-i.akamaihd.net/hls/live/253565/NTV-Public1/master.m3u8
