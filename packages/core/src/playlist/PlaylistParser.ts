@@ -1,6 +1,6 @@
-import * as m3uParser from 'iptv-m3u-playlist-parser';
-import { Channel, Playlist } from '../domain';
+import { Channel, Playlist } from '../domain/index.js';
 import type { ChannelMetadata } from '@iptv/types';
+import { M3UParser } from './M3UParser.js';
 
 /**
  * Playlist format types
@@ -15,28 +15,6 @@ export interface PlaylistSource {
   readonly url: string;
   readonly username?: string;
   readonly password?: string;
-}
-
-/**
- * M3U Parser Result
- */
-interface M3UChannel {
-  name: string;
-  url: string;
-  tvg?: {
-    id?: string;
-    name?: string;
-    logo?: string;
-    country?: string;
-    language?: string;
-  };
-  group?: {
-    title?: string;
-  };
-  http?: {
-    referrer?: string;
-    'user-agent'?: string;
-  };
 }
 
 /**
@@ -59,41 +37,22 @@ export class PlaylistParser {
    */
   static async parseM3U(url: string): Promise<Playlist> {
     try {
-      // Fetch M3U content
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch playlist: ${response.statusText}`);
-      }
+      // Parse M3U using our custom parser
+      const channelData = await M3UParser.parseFromUrl(url);
 
-      const content = await response.text();
-
-      // Parse M3U
-      const result = m3uParser.parse(content);
-
-      if (!result || !result.items) {
-        throw new Error('Invalid M3U format');
+      if (!channelData || channelData.length === 0) {
+        throw new Error('No channels found in playlist');
       }
 
       // Convert to Channel objects
-      const channels: Channel[] = result.items.map((item: M3UChannel, index: number) => {
-        const metadata: ChannelMetadata = {
-          tvgId: item.tvg?.id,
-          tvgName: item.tvg?.name,
-          logo: item.tvg?.logo,
-          country: item.tvg?.country,
-          language: item.tvg?.language,
-          groupTitle: item.group?.title,
-          referer: item.http?.referrer,
-          userAgent: item.http?.['user-agent'],
-        };
-
+      const channels: Channel[] = channelData.map((data) => {
         return Channel.create({
-          id: item.tvg?.id || `channel-${index}`,
-          name: item.name || `Channel ${index + 1}`,
-          streamUrl: item.url,
-          logoUrl: item.tvg?.logo,
-          groupTitle: item.group?.title,
-          metadata,
+          id: data.id,
+          name: data.name,
+          streamUrl: data.streamUrl,
+          logoUrl: data.logoUrl,
+          groupTitle: data.groupTitle,
+          metadata: data.metadata,
         });
       });
 
@@ -242,31 +201,22 @@ export class PlaylistParser {
    */
   static parseFromText(content: string, title: string = 'Custom Playlist'): Playlist {
     try {
-      const result = m3uParser.parse(content);
+      // Parse M3U content using our custom parser
+      const channelData = M3UParser.parse(content);
 
-      if (!result || !result.items) {
-        throw new Error('Invalid M3U format');
+      if (!channelData || channelData.length === 0) {
+        throw new Error('No channels found in playlist');
       }
 
-      const channels: Channel[] = result.items.map((item: M3UChannel, index: number) => {
-        const metadata: ChannelMetadata = {
-          tvgId: item.tvg?.id,
-          tvgName: item.tvg?.name,
-          logo: item.tvg?.logo,
-          country: item.tvg?.country,
-          language: item.tvg?.language,
-          groupTitle: item.group?.title,
-          referer: item.http?.referrer,
-          userAgent: item.http?.['user-agent'],
-        };
-
+      // Convert to Channel objects
+      const channels: Channel[] = channelData.map((data) => {
         return Channel.create({
-          id: item.tvg?.id || `channel-${index}`,
-          name: item.name || `Channel ${index + 1}`,
-          streamUrl: item.url,
-          logoUrl: item.tvg?.logo,
-          groupTitle: item.group?.title,
-          metadata,
+          id: data.id,
+          name: data.name,
+          streamUrl: data.streamUrl,
+          logoUrl: data.logoUrl,
+          groupTitle: data.groupTitle,
+          metadata: data.metadata,
         });
       });
 

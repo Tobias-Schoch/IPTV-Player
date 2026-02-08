@@ -3,4 +3,5 @@
  * @module @iptv/core/playlist
  */
 
-export * from './PlaylistParser';
+export * from './PlaylistParser.js';
+export * from './M3UParser.js';

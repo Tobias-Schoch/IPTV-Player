@@ -42,16 +42,15 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@iptv/types": "workspace:*",
-    "zustand": "^4.5.0",
-    "iptv-m3u-playlist-parser": "^1.0.0"
+    "@iptv/types": "*",
+    "zustand": "^4.5.0"
   },
   "peerDependencies": {
     "shaka-player": "^4.10.0",
     "hls.js": "^1.5.0"
   },
   "devDependencies": {
-    "@iptv/typescript-config": "workspace:*",
+    "@iptv/typescript-config": "*",
     "@types/node": "^20.11.0",
     "typescript": "^5.3.3",
     "vitest": "^1.2.0"

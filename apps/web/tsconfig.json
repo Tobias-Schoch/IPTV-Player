@@ -3,11 +3,25 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@iptv/core": ["../../packages/core/src"],
-      "@iptv/types": ["../../packages/types/src"]
-    }
+      "@/*": [
+        "./src/*"
+      ],
+      "@iptv/core": [
+        "../../packages/core/src"
+      ],
+      "@iptv/types": [
+        "../../packages/types/src"
+      ]
+    },
+    "noEmit": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

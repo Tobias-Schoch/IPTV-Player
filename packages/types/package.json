@@ -19,7 +19,7 @@
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@iptv/typescript-config": "workspace:*",
+    "@iptv/typescript-config": "*",
     "typescript": "^5.3.3"
   }
 }
